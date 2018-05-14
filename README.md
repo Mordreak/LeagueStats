@@ -1,4 +1,4 @@
-# Sitemap Tester
+# LeagueStats
 
 League-stats is a Symfony project, I built it in order to work on all the parts of the Riot Dev API which is probably the biggest API of current massive multi-player online games for now. 
 
