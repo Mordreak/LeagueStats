@@ -1,0 +1,30 @@
+# Learn more about services, parameters and containers at
+# https://symfony.com/doc/current/service_container.html
+parameters:
+    my_user_provider.class: LSTATS\UserBundle\Security\Core\User\FOSUBUserProvider
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+
+    app.form.registration:
+        class: LSTATS\UserBundle\Form\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+
+    twig.extension.twigext:
+        class: LSTATS\RiotBundle\Twig\ChampionExtension
+        tags:
+            - { name: twig.extension }
+
+    my_user_provider:
+        class: "%my_user_provider.class%"
+        #this is the place where the properties are passed to the UserProvider - see config.yml
+        arguments: ['@fos_user.user_manager',{facebook: facebook_id, google: google_id}]

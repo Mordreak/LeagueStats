@@ -1,0 +1,7 @@
+lstats_user_homepage:
+    path:     /
+    defaults: { _controller: LSTATSUserBundle:User:index }
+
+lstats_user_wards_stat:
+    path:     /wardsStats
+    defaults: { _controller: LSTATSUserBundle:User:getWardsStats }

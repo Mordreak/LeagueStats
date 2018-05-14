@@ -1,0 +1,49 @@
+{% if app.request.get('page') matches '/^\\d+$/' %}
+    {% set currentPage = app.request.get('page') %}
+{% else %}
+    {% set currentPage = 1 %}
+{% endif %}
+
+{% extends "::base.html.twig" %}
+
+{% block champions_nav_item %}<li class="active">{% endblock %}
+
+{% block body %}
+    <div class="centered-empty-div card">
+        <div id="paginator">
+            <ul class="pagination hide-small-mobile">
+                {% for i in 1..pages %}
+                    <li {% if currentPage == i %}class="active"{% endif %}><a href="{{ path('lstats_champion_list', {'page': i}) }}">{{ i }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="champ-selector">
+            <select class="form-control hide-small-desktop">
+                {% for i in 1..pages %}
+                    <option value="{{ path('lstats_champion_list', {'page': i}) }}" {% if currentPage == i %}selected="true"{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+        <div id="champions-list">
+            {% set iterator = 1 %}
+            {% for champion in champions %}
+                <a href="{{ path('lstats_champion_show', {'championKey': champion.getKey()}) }}">
+                    <img class="champion" src="{{ champion.getLoadingArt() }}" title="{{ champion.getName() }}" />
+                </a>
+                {% if iterator == 5 %}<br class="hide-mobile">{% endif %}
+                {% set iterator = iterator + 1 %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#champ-selector .form-control').change(function() {
+            document.location = $('#champ-selector .form-control').val();
+        });
+    });
+</script>
+{% endblock %}

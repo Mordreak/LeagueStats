@@ -1,0 +1,36 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="oauth-wrapper">
+    <button class="loginBtn loginBtn--google" onclick="document.location='{{ path('hwi_oauth_service_redirect', {service: 'google'}) }}'">
+        Login with Google
+    </button>
+    <br>
+    <button class="loginBtn loginBtn--facebook" onclick="document.location='{{ path('hwi_oauth_service_redirect', {service: 'facebook'}) }}'">
+        Login with Facebook
+    </button>
+    <span>OR</span>
+</div>
+
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register', 'id': 'registration-form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="form-group">
+        {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(form.username, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(form.recaptcha) }}
+    </div>
+
+    <div>
+        <input class="btn btn-default" type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+{{ form_end(form) }}

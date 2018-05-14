@@ -1,0 +1,89 @@
+{% set championArray = champion.toArray() %}
+
+{% extends "::base.html.twig" %}
+
+{% block champions_nav_item %}<li class="active">{% endblock %}
+
+{% block body %}
+    <div class="centered-empty-div card" id="champion-page">
+        <div id="champion-header" style="background-image: url('{{ champion.getSplashArt() }}');">
+            <div class="infos">
+                <img src="{{ champion.getSquareImage() }}" />
+                <div class="title">
+                    <h4>{{ champion.getName() }}</h4>
+                    <h5>{{ champion.getTitle() }}</h5>
+                </div>
+                <div class="rates">
+                    {% for key,rate in rates %}
+                        <div class="rate-wrapper">
+                            <span class="key">{{ key }}</span>
+                            <span class="value">{{ rate }}%</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li data-target="champion-summary" role="presentation" class="active"><a href="#">Summary</a></li>
+            <li data-target="champion-stats" role="presentation"><a href="#">Stats</a></li>
+            <li role="presentation"><a href="#">Leaderboards</a></li>
+        </ul>
+        <div class="champion-summary nav-item">
+            <div class="well blurb">{{ championArray.blurb|raw }} <a href="javascript:">Read More</a></div>
+            <div class="well lore">{{ championArray.lore|raw }} <a href="javascript:">Show Less</a></div>
+            <div class="list-group">
+                <a href="javascript:" class="list-group-item">
+                    <div class="icon">
+                        <img src="https://ddragon.leagueoflegends.com/cdn/7.18.1/img/passive/{{ championArray.passive.image.full }}" />
+                    </div>
+                    <div class="text">
+                        <h4 class="list-group-item-heading">{{ championArray.passive.name }}</h4>
+                        <p class="list-group-item-text">{{ championArray.passive.description|raw }}</p>
+                    </div>
+                </a>
+                {% for spell in championArray.spells %}
+                    <a href="javascript:" class="list-group-item">
+                        <div class="icon">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/7.18.1/img/spell/{{ spell.image.full }}" />
+                        </div>
+                        <div class="text">
+                            <h4 class="list-group-item-heading">{{ spell.name }}</h4>
+                            <p class="list-group-item-text">{{ spell.description|raw }}</p>
+                            <p class="list-group-item-text">{{ spell|fillSpell|raw }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="champion-stats nav-item initial-hide">
+            <div class="panel panel-default">
+                <div class="panel-heading">Champion Stats (+ Per Level)</div>
+                <table class="table">
+                    {% for key,stat in championArray.stats %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ stat }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#champion-page .nav-tabs li a').click(function() {
+            $('#champion-page .nav-item').hide();
+            $('#champion-page .nav-tabs li').removeClass('active');
+            $(this).parent('li').addClass('active');
+            var targetClass = $(this).parent('li').data('target');
+            $('#champion-page .' + targetClass).show();
+            console.log('#champion-page .' + targetClass);
+        });
+        $('.champion-summary.nav-item .well').click(function() {
+            $('.champion-summary.nav-item .well').toggle();
+        })
+    });
+</script>
+{% endblock %}

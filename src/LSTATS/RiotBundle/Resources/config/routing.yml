@@ -1,0 +1,31 @@
+lstats_summoner_show:
+    path:     /summoner/{server}/{summonerId}
+    defaults: { _controller: LSTATSRiotBundle:Summoner:Show }
+
+lstats_summoner_search:
+    path:     /summoner/search
+    defaults: { _controller: LSTATSRiotBundle:Summoner:Search }
+
+lstats_summoner_history:
+    path:     /summoner/history/{server}/{summonerId}
+    defaults: { _controller: LSTATSRiotBundle:Summoner:getSummonerHistory }
+
+lstats_summoner_ranks:
+    path:     /summoner/ranks/{server}/{summonerId}
+    defaults: { _controller: LSTATSRiotBundle:Summoner:getSummonerRankedStats }
+
+lstats_champion_list:
+    path:     /champion/list
+    defaults: { _controller: LSTATSRiotBundle:Champion:list }
+
+lstats_champion_show:
+    path:     /champion/{championKey}
+    defaults: { _controller: LSTATSRiotBundle:Champion:show }
+
+lstats_game_search:
+    path:     /game/search
+    defaults: { _controller: LSTATSRiotBundle:Game:Search }
+
+lstats_game_show:
+    path:     /game/{server}/{summonerId}
+    defaults: { _controller: LSTATSRiotBundle:Game:Show }

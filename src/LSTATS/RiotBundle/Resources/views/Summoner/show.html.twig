@@ -1,0 +1,214 @@
+{% extends "::base.html.twig" %}
+
+{% set ranks = summoner.getRanks() %}
+
+{# Ranked Solo 5X5 Compute #}
+{% if ranks['RANKED_SOLO_5x5'] is defined %}
+    {% if ranks['RANKED_SOLO_5x5'] is not empty %}
+        {% set soloFive = ranks['RANKED_SOLO_5x5']['tier']|lower %}
+        {% set soloFiveTier = ranks['RANKED_SOLO_5x5']['tier'] %}
+        {% set soloFiveLeagueName = ranks['RANKED_SOLO_5x5']['leagueName'] %}
+        {% set soloFiveLeaguePoints = ranks['RANKED_SOLO_5x5']['leaguePoints'] %}
+        {% set soloFiveRank = ranks['RANKED_SOLO_5x5']['rank'] %}
+    {% endif %}
+{% else %}
+    {% set soloFive = 'provisional' %}
+    {% set soloFiveTier = 'Unranked' %}
+    {% set soloFiveLeagueName = '...' %}
+    {% set soloFiveLeaguePoints = '0' %}
+    {% set soloFiveRank = '' %}
+{% endif %}
+
+{# Ranked Flex 5X5 Compute #}
+{% if ranks['RANKED_FLEX_SR'] is defined %}
+    {% if ranks['RANKED_FLEX_SR'] is not empty %}
+        {% set flexFive = ranks['RANKED_FLEX_SR']['tier']|lower %}
+        {% set flexFiveTier = ranks['RANKED_FLEX_SR']['tier'] %}
+        {% set flexFiveLeagueName = ranks['RANKED_FLEX_SR']['leagueName'] %}
+        {% set flexFiveLeaguePoints = ranks['RANKED_FLEX_SR']['leaguePoints'] %}
+        {% set flexFiveRank = ranks['RANKED_FLEX_SR']['rank'] %}
+    {% endif %}
+{% else %}
+    {% set flexFive = 'provisional' %}
+    {% set flexFiveTier = 'Unranked' %}
+    {% set flexFiveLeagueName = '...' %}
+    {% set flexFiveLeaguePoints = '0' %}
+    {% set flexFiveRank = '' %}
+{% endif %}
+
+{# Ranked Flex 3X3 Compute #}
+{% if ranks['RANKED_FLEX_TT'] is defined %}
+    {% if ranks['RANKED_FLEX_TT'] is not empty %}
+        {% set flexThree = ranks['RANKED_FLEX_TT']['tier']|lower %}
+        {% set flexThreeTier = ranks['RANKED_FLEX_TT']['tier'] %}
+        {% set flexThreeLeagueName = ranks['RANKED_FLEX_TT']['leagueName'] %}
+        {% set flexThreeLeaguePoints = ranks['RANKED_FLEX_TT']['leaguePoints'] %}
+        {% set flexThreeRank = ranks['RANKED_FLEX_TT']['rank'] %}
+    {% endif %}
+{% else %}
+    {% set flexThree = 'provisional' %}
+    {% set flexThreeTier = 'Unranked' %}
+    {% set flexThreeLeagueName = '...' %}
+    {% set flexThreeLeaguePoints = '0' %}
+    {% set flexThreeRank = '' %}
+{% endif %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">
+                                SUMMARY <i class="glyphicon glyphicon-triangle-top"></i><i class="glyphicon glyphicon-triangle-bottom"></i></a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="card card-user">
+                                <div class="image">
+                                    <img {% if championsMastered is not empty %}src="{{ championsMastered[0].champion.getSplashArt() }}" alt="{{ championsMastered[0].champion.getName() }}"{% endif %}/>
+                                </div>
+                                <div class="content">
+                                    <div class="author">
+                                        <a href="javascript:">
+                                            <img class="avatar border-gray" src="{{ summoner.getProfileIcon() }}" alt="Profile Icon"/>
+
+                                            <h4 class="title">{{ summoner.getName() }}<br />
+                                                <small>Level {{ summoner.getLevel() }}</small>
+                                            </h4>
+                                        </a>
+                                    </div>
+                                    <div class="ranks-wrapper">
+                                        <p class="description text-center ranks hide-small-mobile">
+                                            <b>Flex Queue 5V5</b><br/>
+                                            <img src="/lib/local/img/{{ flexFive }}.png" height="180" /><br>
+                                            {{ flexFiveTier }} {{ flexFiveRank }} <br>
+                                            <b>"{{ flexFiveLeagueName }}"</b> <br>
+                                            {{ flexFiveLeaguePoints }} League Point(s)
+                                        </p>
+                                        <p class="description text-center ranks centered">
+                                            <b>Solo Queue 5V5</b><br/>
+                                            <img src="/lib/local/img/{{ soloFive }}.png" height="180" /><br>
+                                            {{ soloFiveTier }} {{ soloFiveRank }} <br>
+                                            <b>"{{ soloFiveLeagueName }}"</b> <br>
+                                            {{ soloFiveLeaguePoints }} League Point(s)
+                                        </p>
+                                        <p class="description text-center ranks hide-small-desktop">
+                                            <b>Flex Queue 5V5</b><br/>
+                                            <img src="/lib/local/img/{{ flexFive }}.png" height="180" /><br>
+                                            {{ flexFiveTier }} {{ flexFiveRank }} <br>
+                                            <b>"{{ flexFiveLeagueName }}"</b> <br>
+                                            {{ flexFiveLeaguePoints }} League Point(s)
+                                        </p>
+                                        <p class="description text-center ranks">
+                                            <b>Flex Queue 3V3</b><br/>
+                                            <img src="/lib/local/img/{{ flexThree }}.png" height="180" /><br>
+                                            {{ flexThreeTier }} {{ flexThreeRank }} <br>
+                                            <b>"{{ flexThreeLeagueName }}"</b> <br>
+                                            {{ flexThreeLeaguePoints }} League Point(s)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapse2">
+                                MATCH HISTORY<i class="glyphicon glyphicon-triangle-top"></i><i class="glyphicon glyphicon-triangle-bottom"></i></a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="header">
+                                        <h4 class="title">Match History</h4>
+                                        <p class="category">(Last 20 games played)</p>
+                                    </div>
+                                    <div class="content table-responsive table-full-width match-history" id="match-history">
+                                        <table class="table table-hover table-striped">
+                                            <thead>
+                                            <th class="hide-mobile">DATE</th>
+                                            <th>CHAMPION</th>
+                                            <th class="hide-mobile">ROLE</th>
+                                            <th>WIN/LOSE</th>
+                                            <th class="hide-mobile">DURATION</th>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapse3">
+                                ADVANCED STATS<i class="glyphicon glyphicon-triangle-top"></i><i class="glyphicon glyphicon-triangle-bottom"></i></a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h4 class="title">Ranked Game Stats</h4>
+                                        <p class="category">Average Stats Per Game</p>
+                                    </div>
+                                    <div class="content table-responsive table-full-width match-history" id="ranked-stats">
+                                            <table class="table table-hover table-striped">
+                                                <thead>
+                                                <th>STATS</th>
+                                                <th>VALUES</th>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h4 class="title">Average Difference</h4>
+                                        <p class="category">Average Difference Per Game</p>
+                                    </div>
+                                    <div class="content table-responsive table-full-width match-history" id="global-stats">
+                                        <table class="table table-hover table-striped">
+                                            <thead>
+                                            <th>STATS</th>
+                                            <th>VALUES</th>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{{ asset('lib/local/js/global.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            var historyUrlRequest = '{{ path('lstats_summoner_history',
+                {'server': app.request.get('server'), 'summonerId': summoner.getSummonerId()}) }}';
+            var ranksUrlRequest = '{{ path('lstats_summoner_ranks',
+            {'server': app.request.get('server'), 'summonerId': summoner.getSummonerId()}) }}';
+            getSummonerHistory(historyUrlRequest, getSummonerRanks, ranksUrlRequest);
+        });
+    </script>
+{% endblock %}

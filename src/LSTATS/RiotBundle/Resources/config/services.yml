@@ -1,0 +1,12 @@
+services:
+    lstats_riot.champions:
+        class: LSTATS\RiotBundle\Services\ChampionsService
+        arguments: ["%riot_api_key%", "@doctrine.orm.entity_manager", "@logger"]
+
+    lstats_riot.summoners:
+        class: LSTATS\RiotBundle\Services\SummonersService
+        arguments: ["%riot_api_key%", "@doctrine.orm.entity_manager", "@logger", "@doctrine"]
+
+    lstats_riot.matchs:
+        class: LSTATS\RiotBundle\Services\MatchsService
+        arguments: ["%riot_api_key%", "@doctrine.orm.entity_manager", "@logger", "@doctrine"]

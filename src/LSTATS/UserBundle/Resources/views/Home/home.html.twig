@@ -1,0 +1,73 @@
+{% extends "::base.html.twig" %}
+
+{% block home_nav_item %}<li class="active">{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">EUW Challenger League</h4>
+                        <p class="category">(Top 200 players in EUW)</p>
+                    </div>
+                    <div class="content table-responsive table-full-width challengers-table">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <th class="hide-mobile">RANK</th>
+                            <th>NAME</th>
+                            <th class="hide-mobile">WINS</th>
+                            <th class="hide-mobile">LOSSES</th>
+                            <th>POINTS</th>
+                            </thead>
+                            <tbody>
+                            {% set i = 1 %}
+                            {% for challenger in challengers %}
+                                <tr data-href="{{ path('lstats_summoner_show', {'server': 'euw', 'summonerId': challenger.playerOrTeamId}) }}">
+                                    <td class="hide-mobile">{{ i }}</td>
+                                    <td>{{ challenger.playerOrTeamName }}</td>
+                                    <td class="hide-mobile">{{ challenger.wins }}</td>
+                                    <td class="hide-mobile">{{ challenger.losses }}</td>
+                                    <td>{{ challenger.leaguePoints }}</td>
+                                </tr>
+                                {% set i = i+1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card ">
+                    <div class="header">
+                        <h4 class="title">(Ranked) Wards Winrate</h4>
+                        <p class="category">Wards Killed And Placed Winrate (%)</p>
+                    </div>
+                    <div class="content">
+                        <div id="chartActivity" class="ct-chart"></div>
+
+                        <div class="footer">
+                            <div class="legend">
+                                <i class="fa fa-circle text-info"></i> Wards Placed
+                                <i class="fa fa-circle text-danger"></i> Wards Killed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{{ asset('lib/local/js/global.min.js') }}"></script>
+    <script>
+        $('tr[data-href]').on("click", function() {
+            document.location = $(this).data('href');
+        });
+        var wardsStatsUrl = '{{ path('lstats_user_wards_stat') }}';
+        getWardsStats(wardsStatsUrl);
+    </script>
+{% endblock %}

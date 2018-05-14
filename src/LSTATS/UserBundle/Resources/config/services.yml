@@ -1,0 +1,4 @@
+services:
+#    lstats_user.example:
+#        class: LSTATS\UserBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
